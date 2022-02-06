@@ -65,6 +65,21 @@ export const style = StyleSheet.create({
 
         backgroundColor: "#7F5DFD"
 
+    },
+
+    labelContainer: {
+        display: "flex",
+        flexDirection: "row",
+
+        justifyContent: "space-between",
+        alignItems: "center"
+
+    },
+
+    icon: {
+        marginTop: 38,
+        marginRight: 25
+
     }
 
 });
