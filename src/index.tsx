@@ -1,21 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import Home from './pages/Home';
+import Translator from "./pages/Translator";
+
+const Stack = createNativeStackNavigator();
 
 export default function Application() {
   return (
-    <View style={ styles.container }>
-      <Text style={{ color: '#FFF' }}>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="light" />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen options={{ headerShown: false }} name={"Home"} component={Home} />
+      <Stack.Screen options={{ headerShown: false }} name={"Translator"} component={Translator} />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  
-});
