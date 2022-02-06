@@ -27,9 +27,7 @@ export const style = StyleSheet.create({
         alignItems: "flex-end",
         marginTop: 150,
         marginHorizontal: 20
-
-
-
+        
     },
 
     title: {
