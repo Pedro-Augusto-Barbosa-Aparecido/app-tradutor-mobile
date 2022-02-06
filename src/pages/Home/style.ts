@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
     button: {
@@ -24,7 +24,20 @@ export const style = StyleSheet.create({
 
     containerButton: {
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "flex-end",
+        marginTop: 150,
+        marginHorizontal: 20
+
+
+
+    },
+
+    title: {
+        fontSize: 30,
+        color: "#798921",
+        marginTop: 30,
+        marginLeft: 20,
+        fontWeight: "bold"
 
     }
 
