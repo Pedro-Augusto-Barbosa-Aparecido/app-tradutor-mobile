@@ -80,6 +80,62 @@ export const style = StyleSheet.create({
         marginTop: 38,
         marginRight: 25
 
+    },
+
+    containerList: {
+        marginHorizontal: 10,
+
+        padding: 20,
+        paddingVertical: 0
+
+    },
+
+    containerListProps: {
+        marginTop: 5,
+        display: "flex",
+
+        flexDirection: "row"
+
+    },
+
+    examplesContainer: {
+        flexDirection: "column"
+
+    },
+
+    examplesContent: {
+        padding: 10,
+        paddingTop: 0,
+
+        borderBottomColor: "#000",
+        borderBottomWidth: 1
+
+    },
+
+    exampleContainer: {
+        flexDirection: "column"
+
+    },
+
+    exampleAndReference: {
+        padding: 15,
+        paddingVertical: 0
+
+    },
+
+    contentWord: {
+
+    },
+
+    titleContent: {
+        fontWeight: "bold"
+
+    },
+
+    mainContainerList: {
+        marginVertical: 10,
+        marginBottom: 90
+
     }
 
 });
