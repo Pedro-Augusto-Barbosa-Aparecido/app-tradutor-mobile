@@ -7,7 +7,8 @@ import {
     TouchableOpacity, 
     TextInput,
     Alert,
-    ScrollView
+    ScrollView,
+    Linking
 
 } from "react-native";
 
@@ -19,6 +20,8 @@ import { ParamListBase } from "@react-navigation/native";
 
 import { Entypo } from "@expo/vector-icons";
 import { useState } from "react";
+
+import { StorageAccessFramework } from "expo-file-system";
 
 import axios from "axios";
 
@@ -49,27 +52,56 @@ export type WordResponse = {
 
 }
 
+export const toggleBoolean = (value: boolean, fn: Function): void => value === true ? fn(false) : fn(true);
+
 export default function Translator (props: NativeStackScreenProps<ParamListBase, string>) {
+    const DOCUMENTS_URI_SAF = StorageAccessFramework.getUriForDirectoryInRoot("Documents");
+
     const [visible, setVisible] = useState<boolean>(false);
     const [textInputContent, setTextInputContent] = useState<string>("");
     const [content, setContent] = useState<Array<Word>>([]);
+    const [errorNetwork, setErrorNetwork] = useState<{ errorNetwork: boolean, message: string }>({ errorNetwork: false, message: "Error on network" });
+
     // https://6715-170-231-187-220.ngrok.io
     const [url, setUrl] = useState<string>("https://translator-server-refactoring.herokuapp.com");
 
-    const search = async (word: string) => {
-        const res = await axios.post(`${url}/word/get-contains`, {
-            __word: word
-        });
-        const data: WordResponse = res.data;
+    
 
-        if (data.words) {
-            const words = data.words;
-            setContent([...words]);
+    const searchOnline = async (word: string) => {
+        try {
+            const res = await axios.post(`${url}/word/get-contains`, {
+                __word: word
+            });
+    
+            const data: WordResponse = res.data;
+    
+            if (data.words) {
+                const words = data.words;
+                setContent([...words]);
+    
+            } else 
+                setContent([]);
 
-        } else 
+        } catch (err) {
+            Alert.alert("Network Error", "Error on connection, search term again for use offline!");
             setContent([]);
+            setErrorNetwork({ errorNetwork: true, message: "Connection Error! Try Later." });
+
+        }
 
     };
+
+    const getReference = (reference: string) => {
+        if (reference.includes(".pdf"))
+            Linking.openURL(reference);
+
+        else if (reference === "No Reference")
+            Linking.openURL("https://translate.google.com");
+
+        else
+            Linking.openURL(reference);
+
+    } 
 
     return (
         <Container>
@@ -85,7 +117,10 @@ export default function Translator (props: NativeStackScreenProps<ParamListBase,
                 style={style.textInput}
                 onChangeText={(text) => setTextInputContent(text)}
             />
-            <TouchableOpacity onPress={() => search(textInputContent)} style={style.translateButton}>
+            <TouchableOpacity onPress={() => {
+                searchOnline(textInputContent);
+
+            }} style={style.translateButton}>
                 <Text style={{ color: "#FFF" }}>Search</Text>
             </TouchableOpacity>
             <ScrollView style={style.mainContainerList}>
@@ -116,7 +151,7 @@ export default function Translator (props: NativeStackScreenProps<ParamListBase,
                                                         </View>
                                                         <View style={ [style.containerListProps, style.exampleContainer] } >
                                                             <Text style={ [style.titleContent] }>Referência: </Text>
-                                                            <Text style={ [style.exampleAndReference, style.contentWord] } >{ example.reference || "No Reference" }</Text>
+                                                            <Text onPress={() => getReference(example.reference || "No Reference")} style={ [style.exampleAndReference, style.contentWord] } >{ example.reference || "No Reference" }</Text>
                                                         </View>
                                                     </View>
                                         })
